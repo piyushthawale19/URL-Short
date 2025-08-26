@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <head>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: black;
+        color: white;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+  </head>
+  <body>
+    <h1 class="text-3xl font-bold flex justify-center mb-20 underline">
+      URL Shortener
+    </h1>
+
+    <% if (locals.id) { %>
+    <p>
+      URL Generated:
+      <a href="http://localhost:8001/<%= id %>" target="_blank">
+        http://localhost:8001/<%= id %>
+      </a>
+    </p>
+    <% } %>
+
+    <form method="POST" action="/url" class="flex justify-center">
+      <label class="pr-5 underline">Enter Your Original URL:</label>
+      <input
+        class="border-2 border-purple-500 rounded px-2 py-1 mr-5 w-80"
+        type="text"
+        name="url"
+        placeholder="https://example.com"
+        required
+      />
+      <button
+        class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-800 cursor-pointer"
+        type="submit"
+      >
+        Generate
+      </button>
+    </form>
+    <div class="p-30 flex justify-center">
+      <% if (locals.urls) { %>
+      <table class="border-collapse border border-gray-600 w-full text-center">
+        <thead class="mb-10 bg-purple-800 text-white">
+          <tr class="space-x-5">
+            <th class="px-5 py-2">S.NO</th>
+            <th class="px-5 py-2">ShortId</th>
+            <th class="px-5 py-2">Redirect</th>
+            <th class="px-5 py-2">Clicks</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-600 mb-2">
+          <% urls.forEach((url,index )=> { %>
+          <tr class="hover:bg-gray-800">
+            <td class="px-5 py-2"><%= index +1 %></td>
+            <td class="px-5 py-2 text-purple-400 hover:underline">
+              <a
+                href="http://localhost:8001/<%= url.shortId %>"
+                target="_blank"
+              >
+                localhost:8001/<%= url.shortId %>
+              </a>
+            </td>
+
+            <td class="px-5 py-2"><%= url.redirectURL %></td>
+            <td class="px-5 py-2"><%= url.visitHistory.length %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <% } %>
+    </div>
+  </body>
+</html>
